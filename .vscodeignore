@@ -1,0 +1,19 @@
+# Sources & build inputs (the published extension only needs dist/)
+.vscode/**
+.idea/**
+.github/**
+src/**
+test/**
+out/**
+node_modules/**
+**/*.ts
+**/*.map
+**/tsconfig*.json
+.gitignore
+.prettierrc
+.eslintrc*
+esbuild.*
+*.vsix
+
+# Files that don't belong in the package
+package-lock.json

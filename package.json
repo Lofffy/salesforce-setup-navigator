@@ -1,0 +1,162 @@
+{
+  "name": "salesforce-setup-navigator",
+  "displayName": "Salesforce Setup Navigator",
+  "description": "Right-click a Salesforce metadata file in VS Code and jump straight to the matching Salesforce Setup page.",
+  "version": "0.1.1",
+  "publisher": "Lofffy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lofffy/salesforce-setup-navigator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lofffy/salesforce-setup-navigator/issues"
+  },
+  "homepage": "https://github.com/Lofffy/salesforce-setup-navigator#readme",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "salesforce",
+    "sfdx",
+    "setup",
+    "metadata",
+    "apex",
+    "object manager"
+  ],
+  "main": "./dist/extension.js",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#0a4fc0",
+    "theme": "dark"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "salesforceSetupNavigator.openInSetup",
+        "title": "Open in Setup",
+        "category": "Salesforce"
+      },
+      {
+        "command": "salesforceSetupNavigator.copySetupUrl",
+        "title": "Copy Setup URL",
+        "category": "Salesforce"
+      },
+      {
+        "command": "salesforceSetupNavigator.openDeveloperConsole",
+        "title": "Open Developer Console",
+        "category": "Salesforce"
+      },
+      {
+        "command": "salesforceSetupNavigator.selectOrg",
+        "title": "Select Org",
+        "category": "Salesforce"
+      },
+      {
+        "command": "salesforceSetupNavigator.runApexTests",
+        "title": "Run Apex Tests",
+        "category": "Salesforce"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "salesforceSetupNavigator.submenu",
+        "label": "Salesforce"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "submenu": "salesforceSetupNavigator.submenu",
+          "group": "navigation@100",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/ || resourceFilename =~ /\\.(flow|object|field|validationRule)-meta\\.xml$/"
+        }
+      ],
+      "editor/context": [
+        {
+          "submenu": "salesforceSetupNavigator.submenu",
+          "group": "navigation@100",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/ || resourceFilename =~ /\\.(flow|object|field|validationRule)-meta\\.xml$/"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "submenu": "salesforceSetupNavigator.submenu",
+          "group": "navigation@100",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/ || resourceFilename =~ /\\.(flow|object|field|validationRule)-meta\\.xml$/"
+        }
+      ],
+      "salesforceSetupNavigator.submenu": [
+        {
+          "command": "salesforceSetupNavigator.openInSetup",
+          "group": "1_open@1"
+        },
+        {
+          "command": "salesforceSetupNavigator.copySetupUrl",
+          "group": "1_open@2"
+        },
+        {
+          "command": "salesforceSetupNavigator.openDeveloperConsole",
+          "group": "2_tools@1",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/"
+        },
+        {
+          "command": "salesforceSetupNavigator.runApexTests",
+          "group": "2_tools@2",
+          "when": "resourceFilename =~ /\\.cls(-meta\\.xml)?$/"
+        },
+        {
+          "command": "salesforceSetupNavigator.selectOrg",
+          "group": "3_org@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "salesforceSetupNavigator.openInSetup",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/ || resourceFilename =~ /\\.(flow|object|field|validationRule)-meta\\.xml$/"
+        },
+        {
+          "command": "salesforceSetupNavigator.copySetupUrl",
+          "when": "resourceFilename =~ /\\.(cls|trigger|page)(-meta\\.xml)?$/ || resourceFilename =~ /\\.(flow|object|field|validationRule)-meta\\.xml$/"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Salesforce Setup Navigator",
+      "properties": {
+        "salesforceSetupNavigator.targetOrg": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Alias or username of the Salesforce org to open. Leave empty to use the project's default org (`sf config` `target-org`). Use the **Salesforce: Select Org** command to set this."
+        },
+        "salesforceSetupNavigator.salesforceCliPath": {
+          "type": "string",
+          "default": "sf",
+          "description": "Path to the Salesforce CLI executable. Change this if 'sf' is not on your PATH."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run bundle",
+    "compile": "tsc -p ./",
+    "bundle": "esbuild src/extension.ts --bundle --platform=node --target=node18 --format=cjs --external:vscode --outfile=dist/extension.js",
+    "watch": "esbuild src/extension.ts --bundle --platform=node --target=node18 --format=cjs --external:vscode --outfile=dist/extension.js --sourcemap --watch",
+    "pretest": "tsc -p tsconfig.test.json",
+    "test": "node --test out/test/*.test.js",
+    "package": "npm run compile && vsce package --allow-missing-repository",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.0",
+    "prettier": "^3.3.1",
+    "typescript": "^5.4.0"
+  }
+}
